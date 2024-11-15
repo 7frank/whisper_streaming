@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: stt-svc
+spec:
+    selector:
+      matchLabels:
+        app: stt-svc
+    template:
+      metadata:
+        labels:
+          app: stt-svc
+      spec:
+        containers:
+        - name: stt
+          image: frank1147/stt-svc
+          env:
+            - name: WHISPER_DEVICE_TYPE
+              value: "gpu"
+            - name: WHISPER_MODEL_SIZE
+              value: "large-v2"
+          ports:
+          - containerPort: 43007
+          resources:
+            limits:
+              cpu: 4000m
+              memory: 16G
+              nvidia.com/gpu: "1"
+            requests:
+              cpu: 2000m
+              memory: 8G
+              nvidia.com/gpu: "1"
+        tolerations:
+          - effect: NoSchedule
+            key: nvidia.com/gpu
+            operator: Exists
+
+
