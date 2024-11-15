@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "whisper-streaming"
+version = "0.1.0"
+description = ""
+authors = ["Frank <frank.reimann@jambit.de>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+librosa = "^0.10.2.post1"
+soundfile = "^0.12.1"
+faster-whisper = "^1.0.3"
+flask = "^3.1.0"
+flask-cors = "^5.0.0"
+websockets = "^14.1"
+cryptography = "^43.0.3"
+# whisper-timestamped = {git = "https://github.com/linto-ai/whisper-timestamped"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
