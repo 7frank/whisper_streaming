@@ -11,6 +11,12 @@ import io
 import soundfile as sf
 import math
 
+import os
+WHISPER_DEVICE_TYPE = os.getenv('WHISPER_DEVICE_TYPE', None)
+if (WHISPER_DEVICE_TYPE is None):
+    raise Exception("WHISPER_DEVICE_TYPE is not set. use 'cpu' or gpu")
+    
+
 logger = logging.getLogger(__name__)
 
 @lru_cache
@@ -115,9 +121,9 @@ class FasterWhisperASR(ASRBase):
         else:
             raise ValueError("modelsize or model_dir parameter must be set")
 
-
         # this worked fast and reliably on NVIDIA L40
-        #model = WhisperModel(model_size_or_path, device="cuda", compute_type="float16", download_root=cache_dir)
+        if WHISPER_DEVICE_TYPE == "gpu":
+            model = WhisperModel(model_size_or_path, device="cuda", compute_type="float16", download_root=cache_dir)
 
         # or run on GPU with INT8
         # tested: the transcripts were different, probably worse than with FP16, and it was slightly (appx 20%) slower
@@ -125,7 +131,8 @@ class FasterWhisperASR(ASRBase):
 
         # or run on CPU with INT8
         # tested: works, but slow, appx 10-times than cuda FP16
-        model = WhisperModel(model_size_or_path, device="cpu", compute_type="int8",download_root=cache_dir) 
+        elif WHISPER_DEVICE_TYPE == "cpu":
+            model = WhisperModel(model_size_or_path, device="cpu", compute_type="int8",download_root=cache_dir) 
         return model
 
     def transcribe(self, audio, init_prompt=""):
