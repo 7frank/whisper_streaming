@@ -1,9 +1,26 @@
-FROM python:3.12-slim
+FROM nvidia/cuda:12.3.2-cudnn9-runtime-ubuntu22.04
+
+# Prevent prompts during the build process
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update package list, install prerequisites, and install Python 3.10
+RUN apt-get update && \
+    apt-get install -y software-properties-common && \
+    add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update && \
+    apt-get install -y python3.12 python3-pip && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Verify Python installation
+RUN python3.12 --version
+
 
 WORKDIR /app
 
 # Copy poetry related files
 COPY pyproject.toml poetry.lock ./
+
 
 # Install poetry
 RUN pip install poetry && \
@@ -23,6 +40,6 @@ EXPOSE 43007
 RUN mkdir -p app/.cache/whisper-streaming
 # First command starting the server
 
-CMD ["python", "whisper_server.py", "--backend", "faster-whisper", "--language", "en", "--min-chunk-size", "1", "--silence-size", "2", "--model_cache_dir", "app/.cache/whisper-streaming"]
-# Second command for the client (Note: You might want to create a separate service for this)
-# CMD ["python", "web_app.py"]
+#CMD ["poetry", "run",  "python3.12", "whisper_server.py", "--backend", "faster-whisper", "--language", "en", "--min-chunk-size", "1", "--silence-size", "2", "--model_cache_dir", "app/.cache/whisper-streaming"]
+
+CMD ["tail", "-f", "/dev/null"] 
