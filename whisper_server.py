@@ -36,7 +36,7 @@ def format_output_transcript(o):
         return None
 
 
-async def audio_stream(websocket, path):
+async def audio_stream(websocket):
 
     out = []
     silence_candidate = []
@@ -122,7 +122,10 @@ logger = logging.getLogger(__name__)
 
 warm_up()
 logger.info("Server started")
-start_server = websockets.serve(audio_stream, 'localhost', 43007)
+async def main():
+    start_server = await websockets.serve(audio_stream, 'localhost', 43007)
+    await start_server.wait_closed()
 
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+asyncio.run(main())
+#asyncio.get_event_loop().run_until_complete(start_server)
+# asyncio.get_event_loop().run_forever()
