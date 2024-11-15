@@ -24,7 +24,7 @@ COPY pyproject.toml poetry.lock ./
 
 # Install poetry
 RUN pip install poetry && \
-    poetry config virtualenvs.create false && \
+    poetry config virtualenvs.create true && \
     poetry install --no-dev
 
 # Copy application files
@@ -40,6 +40,6 @@ EXPOSE 43007
 RUN mkdir -p app/.cache/whisper-streaming
 # First command starting the server
 
-#CMD ["poetry", "run",  "python3.12", "whisper_server.py", "--backend", "faster-whisper", "--language", "en", "--min-chunk-size", "1", "--silence-size", "2", "--model_cache_dir", "app/.cache/whisper-streaming"]
+CMD ["poetry", "run",  "python3.12", "whisper_server.py", "--backend", "faster-whisper", "--language", "en", "--min-chunk-size", "1", "--silence-size", "2", "--model_cache_dir", "app/.cache/whisper-streaming"]
 
-CMD ["tail", "-f", "/dev/null"] 
+# CMD ["tail", "-f", "/dev/null"] 
