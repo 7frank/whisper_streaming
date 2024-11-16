@@ -16,8 +16,8 @@ spec:
           image: ecosystem/stt
           ports:
           - containerPort: 43007
-        env:
-        - name: WHISPER_DEVICE_TYPE
-          value: "cpu"
-        - name: WHISPER_MODEL
-          value: "tiny"
+          env:
+          - name: WHISPER_DEVICE_TYPE
+            value: "cpu"
+          - name: WHISPER_MODEL
+            value: "tiny"
