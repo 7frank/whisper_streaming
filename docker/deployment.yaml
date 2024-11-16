@@ -20,4 +20,4 @@ spec:
         - name: WHISPER_DEVICE_TYPE
           value: "cpu"
         - name: WHISPER_MODEL
-          value: "cpu"
+          value: "tiny"
