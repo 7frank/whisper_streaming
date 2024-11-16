@@ -22,7 +22,8 @@
     const transcriptionArea = document.getElementById('responseText');
 
     function createWebSocket() {
-        socket = new WebSocket(`ws://localhost:8180`);
+       // socket = new WebSocket(`ws://localhost:8180`); // Dev
+        socket = new WebSocket(`ws://localhost:43007`); // Prod via port forwarding
         socket.binaryType = 'arraybuffer';
 
         socket.onopen = () => {
